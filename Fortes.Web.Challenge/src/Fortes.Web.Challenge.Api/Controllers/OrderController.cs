@@ -2,6 +2,7 @@
 using Fortes.Web.Challenge.Api.Controllers.Base;
 using Fortes.Web.Challenge.Application.Dtos.DTOs;
 using Fortes.Web.Challenge.Domain.Core.Interfaces.Services;
+using Fortes.Web.Challenge.Domain.Models;
 using Fortes.Web.Challenge.Domain.Models.Base;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -182,5 +183,27 @@ namespace Fortes.Web.Challenge.Api.Controllers
                 return InternalServerErrorResponse($"An error occurred while removing order with ID {id}.", ex);
             }
         }
+
+        /// <summary>
+        /// Update an order.
+        /// </summary>
+        /// <param name="order">The order to be updated.</param>
+        /// <returns>An updated order</returns>
+        [HttpPut]
+        [ProducesResponseType(typeof(OrderDto), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Update([FromBody] OrderDto order)
+        {
+            try
+            {
+                var updatedOrder = await _orderService.UpdateAsync(order);
+                return SuccessResponse(updatedOrder);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while updating order.");
+                return InternalServerErrorResponse("An error occurred while updating order.", ex);
+            }
+        }
     }
 }
+

@@ -151,5 +151,26 @@ namespace Fortes.Web.Challenge.Api.Controllers
                 return InternalServerErrorResponse($"An error occurred while removing supplier with ID {id}.", ex);
             }
         }
+
+        /// <summary>
+        /// Update an supplier.
+        /// </summary>
+        /// <param name="supplier">The supplier to be updated.</param>
+        /// <returns>An updated supplier</returns>
+        [HttpPut]
+        [ProducesResponseType(typeof(PagedResult<SupplierDto>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Update([FromBody] SupplierDto supplier)
+        {
+            try
+            {
+                var updatedSupplier = await _supplierService.UpdateAsync(supplier);
+                return SuccessResponse(updatedSupplier);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while updating supplier.");
+                return InternalServerErrorResponse("An error occurred while updating supplier.", ex);
+            }
+        }
     }
 }
