@@ -159,7 +159,7 @@ namespace Fortes.Web.Challenge.Api.Controllers
         /// <returns>An updated supplier</returns>
         [HttpPut]
         [ProducesResponseType(typeof(PagedResult<SupplierDto>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetAllPaginated([FromBody] SupplierDto supplier)
+        public async Task<IActionResult> Update([FromBody] SupplierDto supplier)
         {
             try
             {

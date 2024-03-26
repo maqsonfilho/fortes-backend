@@ -158,7 +158,7 @@ namespace Fortes.Web.Challenge.Api.Controllers
         /// <returns>An updated prouct</returns>
         [HttpPut]
         [ProducesResponseType(typeof(ProductDto), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetAllPaginated([FromBody] ProductDto order)
+        public async Task<IActionResult> Update([FromBody] ProductDto order)
         {
             try
             {
