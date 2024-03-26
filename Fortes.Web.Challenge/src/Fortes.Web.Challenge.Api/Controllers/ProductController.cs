@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Fortes.Web.Challenge.Api.Controllers.Base;
 using Fortes.Web.Challenge.Application.Dtos.DTOs;
+using Fortes.Web.Challenge.Application.Services;
 using Fortes.Web.Challenge.Domain.Core.Interfaces.Services;
 using Fortes.Web.Challenge.Domain.Models.Base;
 using Microsoft.AspNetCore.Mvc;
@@ -147,6 +148,27 @@ namespace Fortes.Web.Challenge.Api.Controllers
             {
                 _logger.LogError(ex, $"Error while removing product with ID {id}.");
                 return InternalServerErrorResponse($"An error occurred while removing product with ID {id}.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Update an prouct.
+        /// </summary>
+        /// <param name="prouct">The prouct to be updated.</param>
+        /// <returns>An updated prouct</returns>
+        [HttpPut]
+        [ProducesResponseType(typeof(ProductDto), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetAllPaginated([FromBody] ProductDto order)
+        {
+            try
+            {
+                var updatedProduct = await _productService.UpdateAsync(order);
+                return SuccessResponse(updatedProduct);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while updating prouct.");
+                return InternalServerErrorResponse("An error occurred while updating order.", ex);
             }
         }
     }

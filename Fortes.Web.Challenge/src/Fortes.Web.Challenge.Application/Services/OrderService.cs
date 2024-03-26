@@ -37,6 +37,23 @@ public class OrderService : ServiceBase<OrderDto, Order, CreateOrderValidator>, 
         return await base.AddAsync(obj);
     }
 
+
+    public override async Task<OrderDto> UpdateAsync(OrderDto obj)
+    {
+        var prod = await _productService.GetByIdAsync(obj.ProductId);
+
+        if (prod == null)
+        {
+            throw new Exception($"Product {obj.ProductId} invalid");
+        }
+
+        obj.TotalValue = prod.Value * obj.Amount;
+        obj.Date = DateTime.UtcNow;
+
+        return await base.UpdateAsync(obj);
+    }
+
+
     public async Task<IList<OrderDto>> GetBySupplierIdAsync(Guid supplierId)
     {
         var resultList = await _orderRepository.GetBySupplierIdAsync(supplierId);
